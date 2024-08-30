@@ -19,6 +19,12 @@ To install TorNet, use pip:
 pip install -i https://test.pypi.org/simple/ tornet
 ```
 
+To install TorNet, use yay (Arch Linux):
+
+```bash
+yay -S python-tornet
+```
+
 ## Usage
 
 TorNet provides a command-line interface for easy use. Here are the available options:
