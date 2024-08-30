@@ -134,7 +134,8 @@ We would like to thank the developers of the Tor project for their work in creat
 ## Thanks
 
 Thank you for using TorNet! We hope this tool helps you secure your network and maintain your privacy. If you have any feedback or suggestions, please feel free to reach out to us.
-
+Many thanks also to the original developer [ByteBreach](https://github.com/ByteBreach/tornet) 
+This project is an improvement to his own project
 ---
 
 By following this guide, you should be able to effectively use TorNet to enhance your online privacy and security. Happy browsing!
