@@ -12,4 +12,4 @@ new_ip = change_ip()
 print("New IP:", new_ip)
 print("hh")
 # Change the IP repeatedly
-change_ip_repeatedly(5, 0)
+change_ip_repeatedly(5, 3)
