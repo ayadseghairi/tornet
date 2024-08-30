@@ -16,7 +16,7 @@ TorNet is a Python package that automates IP address changes using Tor. It is a 
 To install TorNet, use pip:
 
 ```bash
-pip install tornet
+pip install -i https://test.pypi.org/simple/ tornet
 ```
 
 ## Usage
