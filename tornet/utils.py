@@ -4,7 +4,10 @@ import platform
 
 def is_arch_linux():
     try:
-        return 'arch' in platform.platform().lower()
+        if 'arch' in platform.platform().lower():
+            return 'arch' in platform.platform().lower()
+        elif 'manjaro' in platform.platform().lower():
+            return 'manjaro' in platform.platform().lower()
     except:
         return False
 
