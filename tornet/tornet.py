@@ -11,6 +11,7 @@ import requests
 import subprocess
 import signal
 import platform
+import random
 from .utils import install_pip, install_requests, install_tor
 from .banner import print_banner
 
@@ -24,10 +25,7 @@ cyan = "\033[36m"
 
 def is_arch_linux():
     try:
-        if 'arch' in platform.platform().lower():
-            return 'arch' in platform.platform().lower()
-        elif 'manjaro' in platform.platform().lower():
-            return 'manjaro' in platform.platform().lower()
+        return 'arch' in platform.platform().lower()
     except:
         return False
 
@@ -107,19 +105,33 @@ def change_ip():
     reload_tor_service()
     return ma_ip()
 
-def change_ip_repeatedly(interval, count):
-    if count == 0:
+def change_ip_repeatedly(interval: str, count):
+    if count == 0: # null
         while True:
-            time.sleep(interval)
-            new_ip = change_ip()
-            if new_ip:
-                print_ip(new_ip)
+            try:
+                inte = interval.split("-")
+                time.sleep(random.randint(int(inte[0]), int(inte[1])))
+                new_ip = change_ip()
+                if new_ip:
+                    print_ip(new_ip)
+            except IndexError:
+                time.sleep(int(interval))
+                new_ip = change_ip()
+                if new_ip:
+                    print_ip(new_ip)
     else:
         for _ in range(count):
-            time.sleep(interval)
-            new_ip = change_ip()
-            if new_ip:
-                print_ip(new_ip)
+            try:
+                inte = interval.split("-")
+                time.sleep(random.randint(int(inte[0]), int(inte[1])))
+                new_ip = change_ip()
+                if new_ip:
+                    print_ip(new_ip)
+            except IndexError:
+                time.sleep(int(interval))
+                new_ip = change_ip()
+                if new_ip:
+                    print_ip(new_ip)
 
 def print_ip(ip):
     print(f'{white} [{green}+{white}]{green} Your IP has been changed to {white}:{green} {ip}')
@@ -154,7 +166,7 @@ def main():
     signal.signal(signal.SIGQUIT, signal_handler)
 
     parser = argparse.ArgumentParser(description="TorNet - Automate IP address changes using Tor")
-    parser.add_argument('--interval', type=int, default=60, help='Time in seconds between IP changes')
+    parser.add_argument('--interval', type=str, default=60, help='Time in seconds between IP changes')
     parser.add_argument('--count', type=int, default=10, help='Number of times to change the IP. If 0, change IP indefinitely')
     parser.add_argument('--ip', action='store_true', help='Display the current IP address and exit')
     parser.add_argument('--auto-fix', action='store_true', help='Automatically fix issues (install/upgrade packages)')
