@@ -11,6 +11,9 @@ def is_arch_linux():
     except:
         return False
 
+def is_macos():
+    return platform.system().lower() == 'darwin'
+
 def install_pip():
     if is_arch_linux():
         try:
@@ -19,6 +22,14 @@ def install_pip():
         except subprocess.CalledProcessError:
             print("pip not found, installing...")
             subprocess.check_output('sudo pacman -Sy python-pip --noconfirm', shell=True)
+            print("pip installed successfully.")
+    elif is_macos():
+        try:
+            subprocess.check_output('which pip3', shell=True)
+            print("pip is already installed.")
+        except subprocess.CalledProcessError:
+            print("pip not found, installing...")
+            os.system("brew install python3")
             print("pip installed successfully.")
     else:
         try:
@@ -48,6 +59,14 @@ def install_tor():
         except subprocess.CalledProcessError:
             print("tor not found, installing...")
             subprocess.check_output('sudo pacman -Sy tor --noconfirm', shell=True)
+            print("tor installed successfully.")
+    elif is_macos():
+        try:
+            subprocess.check_output('brew list tor', shell=True)
+            print("tor is already installed.")
+        except subprocess.CalledProcessError:
+            print("tor not found, installing...")
+            os.system("brew install tor")
             print("tor installed successfully.")
     else:
         try:
