@@ -3,13 +3,7 @@ import subprocess
 import platform
 
 def is_arch_linux():
-    try:
-        if 'arch' in platform.platform().lower():
-            return 'arch' in platform.platform().lower()
-        elif 'manjaro' in platform.platform().lower():
-            return 'manjaro' in platform.platform().lower()
-    except:
-        return False
+    return os.path.exists("/etc/arch-release") or os.path.exists("/etc/manjaro-release")
 
 def install_pip():
     if is_arch_linux():
