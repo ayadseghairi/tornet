@@ -24,10 +24,7 @@ reset = "\033[0m"
 cyan = "\033[36m"
 
 def is_arch_linux():
-    try:
-        return 'arch' in platform.platform().lower()
-    except:
-        return False
+    return os.path.exists("/etc/arch-release") or os.path.exists("/etc/manjaro-release")
 
 def is_tor_installed():
     try:
