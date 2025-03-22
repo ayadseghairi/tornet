@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# tornet - Automate IP address changes using Tor
-# Author: Fidal
-# Copyright (c) 2024 Fidal. All rights reserved.
 import os
 import time
 import argparse
@@ -11,7 +7,6 @@ import requests
 import subprocess
 import signal
 import platform
-import random
 from .utils import install_pip, install_requests, install_tor
 from .banner import print_banner
 
@@ -59,9 +54,6 @@ def initialize_environment():
     install_requests()
     install_tor()
     start_tor_service()
-    print_start_message()
-
-def print_start_message():
     print(f"{white} [{green}+{white}]{green} Tor service started. Please wait a minute for Tor to connect.")
     print(f"{white} [{green}+{white}]{green} Make sure to configure your browser to use Tor for anonymity.")
 
@@ -105,36 +97,19 @@ def change_ip():
     reload_tor_service()
     return ma_ip()
 
-def change_ip_repeatedly(interval: str, count):
-    if count == 0: # null
+def change_ip_repeatedly(interval, count):
+    if count == 0:
         while True:
-            try:
-                inte = interval.split("-")
-                time.sleep(random.randint(int(inte[0]), int(inte[1])))
-                new_ip = change_ip()
-                if new_ip:
-                    print_ip(new_ip)
-            except IndexError:
-                time.sleep(int(interval))
-                new_ip = change_ip()
-                if new_ip:
-                    print_ip(new_ip)
+            time.sleep(interval)
+            new_ip = change_ip()
+            if new_ip:
+                print(f'{white} [{green}+{white}]{green} Your IP has been changed to {white}:{green} {new_ip}')
     else:
         for _ in range(count):
-            try:
-                inte = interval.split("-")
-                time.sleep(random.randint(int(inte[0]), int(inte[1])))
-                new_ip = change_ip()
-                if new_ip:
-                    print_ip(new_ip)
-            except IndexError:
-                time.sleep(int(interval))
-                new_ip = change_ip()
-                if new_ip:
-                    print_ip(new_ip)
-
-def print_ip(ip):
-    print(f'{white} [{green}+{white}]{green} Your IP has been changed to {white}:{green} {ip}')
+            time.sleep(interval)
+            new_ip = change_ip()
+            if new_ip:
+                print(f'{white} [{green}+{white}]{green} Your IP has been changed to {white}:{green} {new_ip}')
 
 def auto_fix():
     install_pip()
@@ -162,11 +137,15 @@ def check_internet_connection():
             return False
 
 def main():
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGQUIT, signal_handler)
+    if platform.system() == "Windows":
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGTERM, signal_handler)
+    else:
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGQUIT, signal_handler)
 
     parser = argparse.ArgumentParser(description="TorNet - Automate IP address changes using Tor")
-    parser.add_argument('--interval', type=str, default=60, help='Time in seconds between IP changes')
+    parser.add_argument('--interval', type=int, default=60, help='Time in seconds between IP changes')
     parser.add_argument('--count', type=int, default=10, help='Number of times to change the IP. If 0, change IP indefinitely')
     parser.add_argument('--ip', action='store_true', help='Display the current IP address and exit')
     parser.add_argument('--auto-fix', action='store_true', help='Automatically fix issues (install/upgrade packages)')
@@ -177,7 +156,7 @@ def main():
     if args.ip:
         ip = ma_ip()
         if ip:
-            print_ip(ip)
+            print(f'{white} [{green}+{white}]{green} Your IP has been changed to {white}:{green} {ip}')
         return
 
     if not is_tor_installed():
