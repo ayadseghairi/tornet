@@ -26,6 +26,9 @@ cyan = "\033[36m"
 def is_arch_linux():
     return os.path.exists("/etc/arch-release") or os.path.exists("/etc/manjaro-release")
 
+def is_macos():
+    return platform.system().lower() == 'darwin'
+
 def is_tor_installed():
     try:
         subprocess.check_output('which tor', shell=True)
@@ -36,18 +39,24 @@ def is_tor_installed():
 def start_tor_service():
     if is_arch_linux():
         os.system("sudo systemctl start tor")
+    elif is_macos():
+        os.system("brew services start tor")
     else:
         os.system("sudo service tor start")
 
 def reload_tor_service():
     if is_arch_linux():
         os.system("sudo systemctl reload tor")
+    elif is_macos():
+        os.system("brew services restart tor")
     else:
         os.system("sudo service tor reload")
 
 def stop_tor_service():
     if is_arch_linux():
         os.system("sudo systemctl stop tor")
+    elif is_macos():
+        os.system("brew services stop tor")
     else:
         os.system("sudo service tor stop")
 
@@ -103,7 +112,7 @@ def change_ip():
     return ma_ip()
 
 def change_ip_repeatedly(interval: str, count):
-    if count == 0: # null
+    if count == 0:  # change indefinitely
         while True:
             try:
                 inte = interval.split("-")
