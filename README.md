@@ -3,6 +3,8 @@
 Automates IP address rotation via the Tor network.  
 Published on [PyPI](https://pypi.org/project/python-tornet/) · 252 ⭐
 
+[![Made in Algeria](https://www.madeinalgeria.dev/badge/tornet.svg)](https://www.madeinalgeria.dev/projects/tornet)
+
 ## Installation
 ```bash
 pip install python-tornet
